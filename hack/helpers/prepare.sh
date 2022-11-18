@@ -17,18 +17,23 @@
 # Please set ProviderNameLower & ProviderNameUpper environment variables before running this script.
 # See: https://github.com/crossplane/terrajet/blob/main/docs/generating-a-provider.md
 set -euo pipefail
-
+PROVIDER='Git'
 ProviderNameUpper=${PROVIDER}
 ProviderNameLower=$(echo "${PROVIDER}" | tr "[:upper:]" "[:lower:]")
 
-git rm -r apis/sample
-git rm -r internal/controller/mytype
+#git rm -r apis/sample
+#git rm -r internal/controller/mytype
 
 REPLACE_FILES='./* ./.github :!build/** :!go.* :!hack/**'
 # shellcheck disable=SC2086
-git grep -l 'template' -- ${REPLACE_FILES} | xargs sed -i.bak "s/template/${ProviderNameLower}/g"
+old='crossplane/provider-git'
+new='kirubaCathrin/provider-git'
+#git grep -l 'template' -- ${REPLACE_FILES} | xargs sed -i.bak "s/template/${ProviderNameLower}/g"
+git grep -l 'crossplane' -- ${REPLACE_FILES} | xargs sed -i.bak "s|crossplane/provider-git|${new}|g"
+#old='crossplane/provider-git'
+#new='KirubaCathrin/provider-git'
 # shellcheck disable=SC2086
-git grep -l 'Template' -- ${REPLACE_FILES} | xargs sed -i.bak "s/Template/${ProviderNameUpper}/g"
+#git grep -l 'Template' -- ${REPLACE_FILES} | xargs sed -i.bak "s/Template/${ProviderNameUpper}/g"
 # We need to be careful while replacing "template" keyword in go.mod as it could tamper
 # some imported packages under require section.
 sed -i.bak "s/provider-template/provider-${ProviderNameLower}/g" go.mod
@@ -36,7 +41,7 @@ sed -i.bak "s/provider-template/provider-${ProviderNameLower}/g" go.mod
 # Clean up the .bak files created by sed
 git clean -fd
 
-git mv "apis/template.go" "apis/${ProviderNameLower}.go"
-git mv "internal/controller/template.go" "internal/controller/${ProviderNameLower}.go"
-git mv "cluster/images/provider-template" "cluster/images/provider-${ProviderNameLower}"
-git mv "cluster/images/provider-template-controller" "cluster/images/provider-${ProviderNameLower}-controller"
+#git mv "apis/template.go" "apis/${ProviderNameLower}.go"
+#git mv "internal/controller/template.go" "internal/controller/${ProviderNameLower}.go"
+#git mv "cluster/images/provider-template" "cluster/images/provider-${ProviderNameLower}"
+#git mv "cluster/images/provider-template-controller" "cluster/images/provider-${ProviderNameLower}-controller"

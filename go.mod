@@ -1,4 +1,4 @@
-module github.com/crossplane/provider-template
+module github.com/kirubaCathrin/provider-git
 
 go 1.19
 

@@ -20,16 +20,20 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/controller"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	"github.com/crossplane/provider-template/internal/controller/config"
-	"github.com/crossplane/provider-template/internal/controller/mytype"
+	"github.com/kirubaCathrin/provider-git/internal/controller/config"
+	"github.com/kirubaCathrin/provider-git/internal/controller/mytype"
+	repository "github.com/kirubaCathrin/provider-git/internal/controller/repository"
+	
 )
 
-// Setup creates all Template controllers with the supplied logger and adds them to
+// Setup creates all Git controllers with the supplied logger and adds them to
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		config.Setup,
 		mytype.Setup,
+		repository.Setup,
+		
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err
